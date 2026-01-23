@@ -2,5 +2,5 @@
 /game/log/
 /game/config/hexid.txt
 /game/cachedir/
-/login/log/
+/auth/log/
 *.cs
