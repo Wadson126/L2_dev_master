@@ -430,6 +430,7 @@ public abstract class Creature extends L2Object
 		// default implementation
 	}
 	
+	
 	/**
 	 * Teleport a L2Character and its pet if necessary.<BR>
 	 * <BR>
@@ -456,7 +457,6 @@ public abstract class Creature extends L2Object
 		setTarget(null);
 		
 		getAI().setIntention(CtrlIntention.ACTIVE);
-		
 		if (randomOffset > 0)
 		{
 			x += Rnd.get(-randomOffset, randomOffset);

