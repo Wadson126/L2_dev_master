@@ -12,7 +12,6 @@ public class PaginationPanel extends JPanel
 	private int maxPages = 1;
 	
 	private final JLabel label = new JLabel();
-	
 	private Runnable onChange;
 	
 	public PaginationPanel()
