@@ -1531,13 +1531,7 @@ public final class Config
 	public static int MMO_MAX_READ_PER_PASS = 2250; // default 12 80 180 1500 2250
 	public static int MMO_MAX_SEND_PER_PASS = 768; // default 12 80 180 512 768
 	public static int MMO_HELPER_BUFFER_COUNT = 192; // default 20 20 20 128 192
-	
-	/// ** Client Packets Queue settings * /
-	/*
-	 * public static int CLIENT_PACKET_QUEUE_SIZE = 14; // default MMO_MAX_READ_PER_PASS + 2 public static int CLIENT_PACKET_QUEUE_MAX_BURST_SIZE = 13; // default MMO_MAX_READ_PER_PASS + 1 public static int CLIENT_PACKET_QUEUE_MAX_PACKETS_PER_SECOND = 80; // default 80 public static int
-	 * CLIENT_PACKET_QUEUE_MEASURE_INTERVAL = 5; // default 5 public static int CLIENT_PACKET_QUEUE_MAX_AVERAGE_PACKETS_PER_SECOND = 40; // default 40 public static int CLIENT_PACKET_QUEUE_MAX_FLOODS_PER_MIN = 2; // default 2 public static int CLIENT_PACKET_QUEUE_MAX_OVERFLOWS_PER_MIN = 1; //
-	 * default 1 public static int CLIENT_PACKET_QUEUE_MAX_UNDERFLOWS_PER_MIN = 1; // default 1 public static int CLIENT_PACKET_QUEUE_MAX_UNKNOWN_PER_MIN = 5; // default 5
-	 */
+	 
 	/** Client Packets Queue settings */
 	public static int CLIENT_PACKET_QUEUE_SIZE = 80; // default MMO_MAX_READ_PER_PASS + 2
 	public static int CLIENT_PACKET_QUEUE_MAX_BURST_SIZE = 70; // + 1; // default MMO_MAX_READ_PER_PASS + 1
@@ -1548,6 +1542,10 @@ public final class Config
 	public static int CLIENT_PACKET_QUEUE_MAX_OVERFLOWS_PER_MIN = 5; // default 1
 	public static int CLIENT_PACKET_QUEUE_MAX_UNDERFLOWS_PER_MIN = 5; // default 1
 	public static int CLIENT_PACKET_QUEUE_MAX_UNKNOWN_PER_MIN = 25; // default 5
+	
+	
+	/** PvP Zone */
+	public static boolean ENABLE_PVP_ZONE_TIME;
 	
 	// --------------------------------------------------
 	
@@ -3222,6 +3220,8 @@ public final class Config
 	private static final void loadCustomConfig()
 	{
 		final ExProperties enchant = initProperties(CUSTOM_FILE);
+		
+		ENABLE_PVP_ZONE_TIME = Boolean.parseBoolean( enchant.getProperty("EnablePvPZoneTime", "false"));
 		ENABLE_TIME_ZONE_SYSTEM = Boolean.parseBoolean(enchant.getProperty("EnableFarmTimeEvent", "False"));
 		ENABLE_GRADE_ITEMS_MARKETPLACE = Boolean.parseBoolean(enchant.getProperty("EnableGradeItemsMarket", "False"));
 		for (String list : enchant.getProperty("GradeItemsMarketPlace", "A;S").split(";"))

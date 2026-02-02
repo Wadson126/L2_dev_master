@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.StringTokenizer;
 import java.util.concurrent.ThreadLocalRandom;
 
+import net.sf.l2j.Config;
 import net.sf.l2j.gameserver.ThreadPool;
 import net.sf.l2j.gameserver.datatables.MapRegionTable.TeleportWhereType;
 import net.sf.l2j.gameserver.instancemanager.ZoneManager;
@@ -34,6 +35,11 @@ public class PvPZoneTimeTask implements Runnable
 	
 	protected PvPZoneTimeTask()
 	{
+		
+		// Se estiver desativado na config, não inicia a task
+		if (!Config.ENABLE_PVP_ZONE_TIME)
+			return;
+		
 		Collection<L2FlagZone> zonesCol = ZoneManager.getInstance().getAllZones(L2FlagZone.class);
 		if (zonesCol != null)
 			_zones = new ArrayList<>(zonesCol);
