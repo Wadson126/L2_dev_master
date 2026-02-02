@@ -1,6 +1,7 @@
-/bin/
-/game/log/
+# L2J Runtime / Generated
 /game/config/hexid.txt
 /game/cachedir/
+/game/log/
 /auth/log/
+/bin/
 *.cs
