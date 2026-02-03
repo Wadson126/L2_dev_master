@@ -879,8 +879,7 @@ public final class Config
 	public static List<Integer> LIST_NPC_WITH_EFFECT = new ArrayList<>();
 	public static boolean WAIT_TIME_FOR_SPAWN_ALL_NPCS;
 	public static String SPAWN_ALL_NPCS_TIME_OPEN_SERVER;
-	public static boolean ALLOW_RANDOM_NPCS_SPAWNS;
-	public static int TIME_FOR_NEW_NPC_FAKES;
+
 	public static List<Integer> CUSTOM_NPCS_CLAN_Y_ALLY = new ArrayList<>();
 	
 	/** Misc */
@@ -1952,8 +1951,7 @@ public final class Config
 				_log.warning("CustomAllianceNpcs: ID invalido -> " + id);
 			}
 		}
-		ALLOW_RANDOM_NPCS_SPAWNS = Boolean.parseBoolean(npcs.getProperty("AllowRandomNpcsFakes", "False"));
-		TIME_FOR_NEW_NPC_FAKES = Integer.parseInt(npcs.getProperty("TimeForNewNpcFakes", "15"));
+
 		WAIT_TIME_FOR_SPAWN_ALL_NPCS = Boolean.parseBoolean(npcs.getProperty("WaitTimeForSpawnAllNpcs", "False"));
 		SPAWN_ALL_NPCS_TIME_OPEN_SERVER = npcs.getProperty("SpawnAllNpcsTimeOpenServer", "18:00");
 		

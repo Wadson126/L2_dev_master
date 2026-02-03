@@ -183,8 +183,6 @@ import net.sf.l2j.itemstime.TimeItemData;
 import net.sf.l2j.itemstime.TimedItemManager;
 import net.sf.l2j.launcher.GameServerLauncher;
 import net.sf.l2j.mission.MissionReset;
-import net.sf.l2j.npcs.random.FakeNpcSwitcher;
-import net.sf.l2j.npcs.random.RandomNpcIdManager;
 import net.sf.l2j.shop.offline.OfflinePlayerData;
 import net.sf.l2j.shop.offline.OfflineStoresData;
 import net.sf.l2j.timezone.TimeFarmZoneData;
@@ -343,16 +341,6 @@ public class GameServer
 		ClanRankingManager.getInstance();
 		TimeRaidBossManager.getInstance();
 		TimeEpicBossManager.getInstance();
-		if (Config.ALLOW_RANDOM_NPCS_SPAWNS)
-		{
-			RandomNpcIdManager.getInstance();
-			FakeNpcSwitcher switcher = new FakeNpcSwitcher();
-			switcher.start();
-		}
-		else
-		{
-			_log.info("Random Spawns Fakes is disabled.");
-		}
 		
 		StringUtil.printSection("Olympiads & Heroes");
 		if (Config.OLY_FIGHT)

@@ -20,7 +20,6 @@ import net.sf.l2j.gameserver.network.SystemMessageId;
 import net.sf.l2j.gameserver.network.serverpackets.MagicSkillUse;
 import net.sf.l2j.gameserver.network.serverpackets.NpcHtmlMessage;
 import net.sf.l2j.gameserver.network.serverpackets.SystemMessage;
-import net.sf.l2j.npcs.random.RandomNpcIdManager;
 
 public class L2CustomBufferInstance extends L2NpcInstance
 {
@@ -41,7 +40,7 @@ public class L2CustomBufferInstance extends L2NpcInstance
 		{
 			int buffid = 0;
 			int bufflevel = 1;
-
+			
 			String nextWindow = null;
 			if (st.countTokens() == 3)
 			{
@@ -54,7 +53,7 @@ public class L2CustomBufferInstance extends L2NpcInstance
 			
 			if (buffid != 0)
 			{
-				 showChatWindow(player, nextWindow);
+				showChatWindow(player, nextWindow);
 				player.broadcastPacket(new MagicSkillUse(this, player, buffid, bufflevel, 5, 0));
 				SkillTable.getInstance().getInfo(buffid, bufflevel).getEffects(this, player);
 				player.sendPacket(SystemMessage.getSystemMessage(SystemMessageId.YOU_FEEL_S1_EFFECT).addSkillName(buffid));
@@ -102,13 +101,11 @@ public class L2CustomBufferInstance extends L2NpcInstance
 		
 		else if (currentCommand.startsWith("menu"))
 		{
-			// 🔥 Resolve o NPC original antes de buscar HTML
-			int npcIdForHtml = RandomNpcIdManager.getOriginalNpcId(getNpcId());
 			
-			final NpcHtmlMessage html = new NpcHtmlMessage(0);
-			html.setFile(getHtmlPath(npcIdForHtml, 0));
+			final NpcHtmlMessage html = new NpcHtmlMessage(getObjectId());
+			html.setFile(getHtmlPath(getNpcId(), 0));
 			html.replace("%objectId%", getObjectId());
-			// html.replace("%countbuff%", player.getBuffCount() + " / " + player.getMaxBuffCount());
+			html.replace("%countbuff%", player.getBuffCount() + " / " + player.getMaxBuffCount());
 			player.sendPacket(html);
 		}
 		
@@ -343,11 +340,8 @@ public class L2CustomBufferInstance extends L2NpcInstance
 			}
 		}
 		
-		// 🔥 Resolve o NPC original antes de buscar HTML
-		int npcIdForHtml = RandomNpcIdManager.getOriginalNpcId(getNpcId());
-		
-		final NpcHtmlMessage html = new NpcHtmlMessage(0);
-		html.setFile(getHtmlPath(npcIdForHtml, 99));
+		final NpcHtmlMessage html = new NpcHtmlMessage(getObjectId());
+		html.setFile(getHtmlPath(getNpcId(), 99));
 		html.replace("%schemes%", sb.toString());
 		html.replace("%max_schemes%", Config.BUFFER_MAX_SCHEMES);
 		html.replace("%objectId%", getObjectId());
@@ -384,17 +378,15 @@ public class L2CustomBufferInstance extends L2NpcInstance
 	// }
 	private void showEditSchemeWindow(Player player, String groupType, String schemeName, int page)
 	{
-		final NpcHtmlMessage html = new NpcHtmlMessage(0);
+		
 		final List<Integer> schemeSkills = BufferTable.getInstance().getScheme(player.getObjectId(), schemeName);
 		
 		// Filtrando os buffs protegidos para não contar na exibição
 		long visibleSkillCount = schemeSkills.stream().filter(skillId -> !CharEffectList.PROTECTED_BUFF_IDS.contains(skillId)) // Ignora buffs protegidos
 			.count();
 		
-		// 🔥 Resolve o NPC original antes de buscar HTML
-		int npcIdForHtml = RandomNpcIdManager.getOriginalNpcId(getNpcId());
-		
-		html.setFile(getHtmlPath(npcIdForHtml, 100));
+		final NpcHtmlMessage html = new NpcHtmlMessage(getObjectId());
+		html.setFile(getHtmlPath(getNpcId(), 100));
 		html.replace("%schemename%", schemeName);
 		
 		// Exibe a contagem sem considerar os buffs protegidos

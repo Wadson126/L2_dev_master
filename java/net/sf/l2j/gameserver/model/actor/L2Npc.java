@@ -114,7 +114,6 @@ import net.sf.l2j.gameserver.taskmanager.DecayTaskManager;
 import net.sf.l2j.gameserver.taskmanager.RandomAnimationTaskManager;
 import net.sf.l2j.gameserver.templates.skills.L2SkillType;
 import net.sf.l2j.gameserver.util.Broadcast;
-import net.sf.l2j.npcs.random.RandomNpcIdManager;
 
 /**
  * This class represents a Non-Player-Character in the world. They are split in :
@@ -206,8 +205,9 @@ public class L2Npc extends Creature
 	 * <BR>
 	 * <B><U> Actions</U> :</B><BR>
 	 * <BR>
-	 * <li>Call the L2Character constructor to set the _template of the L2Character (copy skills from template to object and link _calculators to NPC_STD_CALCULATOR)</li> <li>Set the name of the L2Character</li> <li>Create a RandomAnimation Task that will be launched after the calculated delay if
-	 * the server allow it</li><BR>
+	 * <li>Call the L2Character constructor to set the _template of the L2Character (copy skills from template to object and link _calculators to NPC_STD_CALCULATOR)</li>
+	 * <li>Set the name of the L2Character</li>
+	 * <li>Create a RandomAnimation Task that will be launched after the calculated delay if the server allow it</li><BR>
 	 * <BR>
 	 * @param objectId Identifier of the object to initialized
 	 * @param template The L2NpcTemplate to apply to the NPC
@@ -236,10 +236,12 @@ public class L2Npc extends Creature
 		// Set the name of the L2Character
 		setName(template.getName());
 	}
+	
 	public FakePc getFakePc()
 	{
 		return _fakePc;
 	}
+	
 	@Override
 	public void initKnownList()
 	{
@@ -428,7 +430,6 @@ public class L2Npc extends Creature
 					if (NpcListenerManager.getInstance().notifyNpcInteract(this, player))
 						return;
 					
-					
 					if (!KTBEvent.isPlayerParticipant(player.getObjectId()) && KTBEvent.isStarted() && getNpcId() == KTBConfig.KTB_EVENT_PARTICIPATION_NPC_ID)
 					{
 						VoicedEventKTB.showKTBStatuPage(player);
@@ -539,11 +540,11 @@ public class L2Npc extends Creature
 		}
 		else if (Config.ENABLE_SHIFT_CLICK)
 		{
-		//	if (this instanceof L2MonsterInstance && !isDead() || this instanceof L2RaidBossInstance && !isDead() || this instanceof L2GrandBossInstance && !isDead() || this instanceof L2ChestInstance && !isDead())
-		//	{
-		//		player.sendPacket(ActionFailed.STATIC_PACKET);
-		//		return;
-		//	}
+			// if (this instanceof L2MonsterInstance && !isDead() || this instanceof L2RaidBossInstance && !isDead() || this instanceof L2GrandBossInstance && !isDead() || this instanceof L2ChestInstance && !isDead())
+			// {
+			// player.sendPacket(ActionFailed.STATIC_PACKET);
+			// return;
+			// }
 			// Set the target of the L2PcInstance player
 			player.setTarget(this);
 			
@@ -552,9 +553,8 @@ public class L2Npc extends Creature
 			MyTargetSelected my = new MyTargetSelected(getObjectId(), player.getLevel() - getLevel());
 			player.sendPacket(my);
 			
-			
-			 if (this instanceof L2MonsterInstance || this instanceof L2RaidBossInstance || this instanceof L2GrandBossInstance || this instanceof L2ChestInstance)
-				 ShiffNpcDropList(player, getTemplate().getNpcId(), 1);
+			if (this instanceof L2MonsterInstance || this instanceof L2RaidBossInstance || this instanceof L2GrandBossInstance || this instanceof L2ChestInstance)
+				ShiffNpcDropList(player, getTemplate().getNpcId(), 1);
 		}
 		if (player.getTarget() != this)
 		{
@@ -569,13 +569,13 @@ public class L2Npc extends Creature
 	{
 		final NpcTemplate template = NpcTable.getInstance().getTemplate(npcId);
 		if (template == null)
-			return; 
+			return;
 		
-		if (template.getDropData().isEmpty()) 
+		if (template.getDropData().isEmpty())
 		{
 			player.sendMessage("This target have not drop info.");
 			return;
-		} 
+		}
 		
 		final List<DropCategory> list = new ArrayList<>();
 		template.getDropData().forEach(c -> list.add(c));
@@ -590,50 +590,50 @@ public class L2Npc extends Creature
 		sb.append("<html>");
 		sb.append("<center>");
 		sb.append("<body>");
-		//sb.append("<br>");
+		// sb.append("<br>");
 		sb.append("<table width=\"256\">");
 		sb.append("</table>");
-		//sb.append("<br>");
+		// sb.append("<br>");
 		sb.append("<table width=\"224\" bgcolor=\"000000\">");
-		//sb.append("<tr><td width=\"224\" align=\"center\">Raid Boss Drops</td></tr>");
+		// sb.append("<tr><td width=\"224\" align=\"center\">Raid Boss Drops</td></tr>");
 		sb.append("</table>");
 		sb.append("<br>");
 		
-		for (DropCategory cat : list) 
+		for (DropCategory cat : list)
 		{
 			if (shown == PAGE_LIMIT)
 			{
 				hasMore = true;
 				break;
-			} 
+			}
 			
 			for (DropData drop : cat.getAllDrops())
 			{
 				double mind = 0;
 				double maxd = 0;
-				double chance = (double)drop.getChance() / 10000;
-
+				double chance = (double) drop.getChance() / 10000;
+				
 				mind = Config.RATE_DROP_ITEMS * drop.getMinDrop();
 				maxd = Config.RATE_DROP_ITEMS * drop.getMaxDrop();
-
+				
 				String smind = null, smaxd = null, drops = null;
 				if (mind > 999999)
 				{
 					DecimalFormat df = new DecimalFormat("###.#");
-					smind = df.format(((mind))/1000000) + "KK";
-					smaxd = df.format(((maxd))/1000000) + "KK";
+					smind = df.format(((mind)) / 1000000) + "KK";
+					smaxd = df.format(((maxd)) / 1000000) + "KK";
 				}
 				else if (mind > 999)
 				{
-					smind = (mind/1000) + "K";
-					smaxd = (maxd/1000) + "K";
-				}                                              
+					smind = (mind / 1000) + "K";
+					smaxd = (maxd / 1000) + "K";
+				}
 				else
 				{
 					smind = Float.toString((float) mind);
 					smaxd = Float.toString((float) maxd);
 				}
-
+				
 				if (chance <= 0.001)
 				{
 					DecimalFormat df = new DecimalFormat("#.####");
@@ -651,7 +651,7 @@ public class L2Npc extends Creature
 				}
 				Item item = ItemTable.getInstance().getTemplate(drop.getItemId());
 				String name = item.getName();
-
+				
 				if (name.length() >= 22)
 					name = name.substring(0, 21) + "...";
 				if (myPage != page)
@@ -677,29 +677,27 @@ public class L2Npc extends Creature
 				sb.append("<td align=left width=263>");
 				sb.append("<table>");
 				sb.append("<tr><td align=left width=263>" + (cat.isSweep() ? "<font color=FF0099>Sweep Chance</font>" : "<font color=00FF00>Drop Chance</font>") + " : (" + drops + "%)</td></tr>");
-
+				
 				if (Config.NOT_SHOW_DROP_INFO.contains(Integer.valueOf(item.getItemId())))
 					sb.append("<tr><td align=left width=263><font color=F01E23>" + name + "</font></td></tr>");
 				else
 					sb.append("<tr><td align=left width=263><font color=F9FF00>" + name + "</font> - Min: <font color=00ECFF>" + smind + "</font> Max: <font color=FF0C0C>" + smaxd + "</font></td></tr>");
-
+				
 				sb.append("</table>");
 				sb.append("</td>");
 				sb.append("</tr>");
 				sb.append("</table>");
 				sb.append("<img src=l2ui.squaregray width=294 height=1>");
 				shown++;
-			
-		
-
-			} 
-		} 
+				
+			}
+		}
 		
 		// Build page footer.
 		sb.append("<br><img src=\"L2UI.SquareGray\" width=277 height=1><table width=\"100%\" bgcolor=000000><tr>");
 		
 		if (page > 1)
-			StringUtil.append(sb, "<td align=left width=70><a action=\"bypass droplist "+ npcId + " ", (page - 1), "\">Previous</a></td>");
+			StringUtil.append(sb, "<td align=left width=70><a action=\"bypass droplist " + npcId + " ", (page - 1), "\">Previous</a></td>");
 		else
 			StringUtil.append(sb, "<td align=left width=70>Previous</td>");
 		
@@ -711,10 +709,10 @@ public class L2Npc extends Creature
 			StringUtil.append(sb, "<td align=right width=70>Next</td>");
 		
 		sb.append("</tr></table><img src=\"L2UI.SquareGray\" width=277 height=1>");
-		//sb.append("<br>");
+		// sb.append("<br>");
 		sb.append("<center>");
 		sb.append("<table width=\"160\" cellspacing=\"2\">");
-		sb.append("<tr>");											
+		sb.append("<tr>");
 		sb.append("<tr><td><center><a action=\"bypass -h voiced_menu\">Return</a></center></td></tr>");
 		sb.append("</tr>");
 		sb.append("</table>");
@@ -726,7 +724,7 @@ public class L2Npc extends Creature
 		htm.setHtml(sb.toString());
 		player.sendPacket(htm);
 	}
-
+	
 	/**
 	 * @return the L2Castle this L2Npc belongs to.
 	 */
@@ -1094,8 +1092,9 @@ public class L2Npc extends Creature
 	/**
 	 * <B><U> Format of the pathfile </U> :</B><BR>
 	 * <BR>
-	 * <li>if the file exists on the server (page number = 0) : <B>data/html/default/12006.htm</B> (npcId-page number)</li> <li>if the file exists on the server (page number > 0) : <B>data/html/default/12006-1.htm</B> (npcId-page number)</li> <li>if the file doesn't exist on the server :
-	 * <B>data/html/npcdefault.htm</B> (message : "I have nothing to say to you")</li><BR>
+	 * <li>if the file exists on the server (page number = 0) : <B>data/html/default/12006.htm</B> (npcId-page number)</li>
+	 * <li>if the file exists on the server (page number > 0) : <B>data/html/default/12006-1.htm</B> (npcId-page number)</li>
+	 * <li>if the file doesn't exist on the server : <B>data/html/npcdefault.htm</B> (message : "I have nothing to say to you")</li><BR>
 	 * <BR>
 	 * <B><U> Overriden in </U> :</B><BR>
 	 * <BR>
@@ -1193,7 +1192,7 @@ public class L2Npc extends Creature
 						player.setLoto(i, val);
 						break;
 					}
-			
+				
 			// setting pusshed buttons
 			count = 0;
 			for (int i = 0; i < 5; i++)
@@ -1490,64 +1489,56 @@ public class L2Npc extends Creature
 					return;
 			}
 		}
-		if(!ArenaTask.is_started() && getNpcId() == ArenaConfig.ARENA_NPC)
+		if (!ArenaTask.is_started() && getNpcId() == ArenaConfig.ARENA_NPC)
 		{
 			L2TournamentInstance.NoStartEvent(player);
 			return;
 		}
-		 int npcIdForHtml = getNpcId();
-		 int originalNpcId = RandomNpcIdManager.getOriginalNpcId(npcIdForHtml);
-		 if (originalNpcId != -1)
-		        npcIdForHtml = originalNpcId;
-		 
+		
 		String filename;
 		
-		if (npcIdForHtml >= 31865 && npcIdForHtml <= 31918)
+		if (getNpcId() >= 31865 && getNpcId() <= 31918)
 			filename = SevenSigns.SEVEN_SIGNS_HTML_PATH + "rift/GuardianOfBorder.htm";
 		else
-			filename = getHtmlPath(npcIdForHtml , val);
+			filename = getHtmlPath(getNpcId(), val);
 		
 		final NpcHtmlMessage html = new NpcHtmlMessage(getObjectId());
 		html.setFile(filename);
 		html.replace("%name%", getName());
 		html.replace("%countbuff%", player.getBuffCount() + " / " + player.getMaxBuffCount());
 		html.replace("%objectId%", getObjectId());
-		//BossEvent na html EventsTime.
-	//	html.replace("%ItemNameRoleta%", ItemTable.getInstance().getTemplate(Config.CUSTOM_ITEM_ROULETTE).getName());
-	//	html.replace("%ItemCountRoleta%", Config.ITEM_COUNT_ROLETA);
-		//TvT na html EventsTime.
 		
-		html.replace("%lmTime%", CheckNextEvent.getInstance().getNextLMTime());	
-		if(Config.PVP_EVENT_ENABLED)
+		html.replace("%lmTime%", CheckNextEvent.getInstance().getNextLMTime());
+		if (Config.PVP_EVENT_ENABLED)
 		{
-			if(PvPEvent.getInstance().isActive())	
+			if (PvPEvent.getInstance().isActive())
 				html.replace("%pvp%", "In Progress");
-			else	
-				html.replace("%pvp%", PvPEventNext.getInstance().getNextTime().toString() );
+			else
+				html.replace("%pvp%", PvPEventNext.getInstance().getNextTime().toString());
 		}
-		if(Config.SOLO_FARM_BY_TIME_OF_DAY)
+		if (Config.SOLO_FARM_BY_TIME_OF_DAY)
 		{
-			if(RewardSoloEvent.is_started())
+			if (RewardSoloEvent.is_started())
 				html.replace("%solofarm%", "In Progress");
-			else	
-				html.replace("%solofarm%", InitialSoloEvent.getInstance().getRestartNextTime().toString() );
+			else
+				html.replace("%solofarm%", InitialSoloEvent.getInstance().getRestartNextTime().toString());
 		}
-		if(Config.CHAMPION_FARM_BY_TIME_OF_DAY)
+		if (Config.CHAMPION_FARM_BY_TIME_OF_DAY)
 		{
-			if(ChampionInvade.is_started())
+			if (ChampionInvade.is_started())
 				html.replace("%champion%", "In Progress");
-			else	
-				html.replace("%champion%", InitialChampionInvade.getInstance().getRestartNextTime().toString() );
+			else
+				html.replace("%champion%", InitialChampionInvade.getInstance().getRestartNextTime().toString());
 		}
-		//Tournament na html EventsTime.
-		if(ArenaConfig.TOURNAMENT_EVENT_TIME)
+		// Tournament na html EventsTime.
+		if (ArenaConfig.TOURNAMENT_EVENT_TIME)
 		{
-			if(ArenaTask.is_started())	
+			if (ArenaTask.is_started())
 				html.replace("%arena%", "In Progress");
-			else	
-				html.replace("%arena%", ArenaEvent.getInstance().getNextTime().toString() );
+			else
+				html.replace("%arena%", ArenaEvent.getInstance().getNextTime().toString());
 		}
-		if(TvTConfig.TVT_EVENT_ENABLED)
+		if (TvTConfig.TVT_EVENT_ENABLED)
 		{
 			if (TvTEvent.isStarted())
 			{
@@ -1559,7 +1550,7 @@ public class L2Npc extends Creature
 			}
 		}
 		
-		if(CTFConfig.CTF_EVENT_ENABLED)
+		if (CTFConfig.CTF_EVENT_ENABLED)
 		{
 			if (CTFEvent.isStarted())
 			{
@@ -1570,50 +1561,50 @@ public class L2Npc extends Creature
 				html.replace("%ctf%", CheckNextEvent.getInstance().getNextCTFTime());
 			}
 		}
-		//Party farm EventsTime.
-		if(Config.START_PARTY)
+		// Party farm EventsTime.
+		if (Config.START_PARTY)
 		{
-			if(PartyFarm.is_started())	
+			if (PartyFarm.is_started())
 				html.replace("%partyfarm%", "In Progress");
-			else	
-				html.replace("%partyfarm%", InitialPartyFarm.getInstance().getRestartNextTime().toString() );
+			else
+				html.replace("%partyfarm%", InitialPartyFarm.getInstance().getRestartNextTime().toString());
 		}
-		if(Config.START_SPOIL)
+		if (Config.START_SPOIL)
 		{
-			if(SpoilEvent.is_started())	
+			if (SpoilEvent.is_started())
 				html.replace("%spoilevent%", "In Progress");
-			else	
-				html.replace("%spoilevent%", InitialSpoilEvent.getInstance().getRestartNextTime().toString() );
+			else
+				html.replace("%spoilevent%", InitialSpoilEvent.getInstance().getRestartNextTime().toString());
 		}
-		if(KTBConfig.KTB_EVENT_ENABLED)
+		if (KTBConfig.KTB_EVENT_ENABLED)
 		{
-			if(KTBEvent.isStarted())	
+			if (KTBEvent.isStarted())
 				html.replace("%ktbTime%", "In Progress");
 			else
 				html.replace("%ktbTime%", KTBManager.getInstance().getNextTime());
 		}
-		if(Config.SOLO_BOSS_EVENT)
+		if (Config.SOLO_BOSS_EVENT)
 		{
-			if(SoloBoss.is_started())
+			if (SoloBoss.is_started())
 				html.replace("%bossSolo%", "In Progress");
-			else	
-				html.replace("%bossSolo%", InitialSoloBossEvent.getInstance().getRestartNextTime().toString() );
+			else
+				html.replace("%bossSolo%", InitialSoloBossEvent.getInstance().getRestartNextTime().toString());
 		}
-		if(FOSConfig.FOS_EVENT_ENABLED)
+		if (FOSConfig.FOS_EVENT_ENABLED)
 		{
-			if(FOSEvent.isStarted())	
+			if (FOSEvent.isStarted())
 				html.replace("%FOSTime%", "In Progress");
 			else
 				html.replace("%FOSTime%", FOSManager.getInstance().getNextTime());
 		}
-		if(DMConfig.DM_EVENT_ENABLED)
+		if (DMConfig.DM_EVENT_ENABLED)
 		{
-			if(DMEvent.isStarted())	
+			if (DMEvent.isStarted())
 				html.replace("%DMTime%", "In Progress");
 			else
 				html.replace("%DMTime%", DMManager.getInstance().getNextTime());
 		}
-		//CTF na html EventsTime.
+		// CTF na html EventsTime.
 		
 		player.sendPacket(html);
 		
@@ -1662,8 +1653,13 @@ public class L2Npc extends Creature
 	 * <BR>
 	 * <B><U> Actions</U> :</B><BR>
 	 * <BR>
-	 * <li>Create a DecayTask to remove the corpse of the L2Npc after 7 seconds</li> <li>Set target to null and cancel Attack or Cast</li> <li>Stop movement</li> <li>Stop HP/MP/CP Regeneration task</li> <li>Stop all active skills effects in progress on the L2Character</li> <li>Send the
-	 * Server->Client packet StatusUpdate with current HP and MP to all other L2PcInstance to inform</li> <li>Notify L2Character AI</li><BR>
+	 * <li>Create a DecayTask to remove the corpse of the L2Npc after 7 seconds</li>
+	 * <li>Set target to null and cancel Attack or Cast</li>
+	 * <li>Stop movement</li>
+	 * <li>Stop HP/MP/CP Regeneration task</li>
+	 * <li>Stop all active skills effects in progress on the L2Character</li>
+	 * <li>Send the Server->Client packet StatusUpdate with current HP and MP to all other L2PcInstance to inform</li>
+	 * <li>Notify L2Character AI</li><BR>
 	 * <BR>
 	 * <B><U> Overriden in </U> :</B><BR>
 	 * <BR>
@@ -1676,7 +1672,7 @@ public class L2Npc extends Creature
 	{
 		if (!super.doDie(killer))
 			return false;
-		
+			
 		// normally this wouldn't really be needed, but for those few exceptions,
 		// we do need to reset the weapons back to the initial templated weapon.
 		_currentLHandId = getTemplate().getLeftHand();
@@ -1686,9 +1682,9 @@ public class L2Npc extends Creature
 		_currentCollisionRadius = getTemplate().getCollisionRadius();
 		if (killer instanceof Player)
 		{
-
+			
 			if (_isKTBEvent && ((Player) killer).isInKTBEvent())
-				KTBManager.getInstance().raidKilled();	
+				KTBManager.getInstance().raidKilled();
 		}
 		DecayTaskManager.getInstance().add(this, getTemplate().getCorpseTime());
 		return true;
@@ -1724,7 +1720,9 @@ public class L2Npc extends Creature
 	 * <BR>
 	 * <B><U> Actions</U> :</B><BR>
 	 * <BR>
-	 * <li>Remove the L2Npc from the world when the decay task is launched</li> <li>Decrease its spawn counter</li> <li>Manage Siege task (killFlag, killCT)</li><BR>
+	 * <li>Remove the L2Npc from the world when the decay task is launched</li>
+	 * <li>Decrease its spawn counter</li>
+	 * <li>Manage Siege task (killFlag, killCT)</li><BR>
 	 * <BR>
 	 * <FONT COLOR=#FF0000><B> <U>Caution</U> : This method DOESN'T REMOVE the object from _allObjects of L2World </B></FONT><BR>
 	 * <FONT COLOR=#FF0000><B> <U>Caution</U> : This method DOESN'T SEND Server->Client packets to players</B></FONT><BR>
@@ -1742,7 +1740,7 @@ public class L2Npc extends Creature
 		if (quests != null)
 			for (Quest quest : quests)
 				quest.notifyDecay(this);
-		
+			
 		// Remove the L2Npc from the world when the decay task is launched.
 		super.onDecay();
 		
@@ -1756,7 +1754,9 @@ public class L2Npc extends Creature
 	 * <BR>
 	 * <B><U> Actions</U> :</B><BR>
 	 * <BR>
-	 * <li>Remove the L2Npc from the world and update its spawn object</li> <li>Remove all L2Object from _knownObjects and _knownPlayer of the L2Npc then cancel Attak or Cast and notify AI</li> <li>Remove L2Object object from _allObjects of L2World</li><BR>
+	 * <li>Remove the L2Npc from the world and update its spawn object</li>
+	 * <li>Remove all L2Object from _knownObjects and _knownPlayer of the L2Npc then cancel Attak or Cast and notify AI</li>
+	 * <li>Remove L2Object object from _allObjects of L2World</li><BR>
 	 * <BR>
 	 * <FONT COLOR=#FF0000><B> <U>Caution</U> : This method DOESN'T SEND Server->Client packets to players</B></FONT><BR>
 	 * <BR>
@@ -1980,72 +1980,8 @@ public class L2Npc extends Creature
 	{
 		return getTemplate().getSkills();
 	}
+	
 	/** The _ ct f_ flag team name. */
 	public boolean _isFOS_Artifact = false;
-	public void switchFakeId()
-	{
-	    if (!RandomNpcIdManager.isRandomNpc(getNpcId()))
-	        return;
-
-	    int[] fakeIds = RandomNpcIdManager.getFakeIds(getNpcId());
-	    if (fakeIds == null || fakeIds.length == 0)
-	        return;
-
-	    int currentFake = getFakeNpcId();
-	    int nextIndex = 0;
-
-	    for (int i = 0; i < fakeIds.length; i++)
-	    {
-	        if (fakeIds[i] == currentFake)
-	        {
-	            nextIndex = (i + 1) % fakeIds.length;
-	            break;
-	        }
-	    }
-
-	    int nextFakeId = fakeIds[nextIndex];
-	    setFakeNpcId(nextFakeId);
-
-	    // Atualizar nome custom do NPC
-	    String baseName = getTemplate().getName();
-	    setCustomName(nextFakeId + baseName + nextFakeId);
-	}
-
-	private int _fakeNpcId = 0;
-	private String _customName = null;
-
-	public void setFakeNpcId(int id)
-	{
-	    _fakeNpcId = id;
-	}
-
-	public int getFakeNpcId()
-	{
-	    return _fakeNpcId > 0 ? _fakeNpcId : getNpcId();
-	}
-
-	public void setCustomName(String name)
-	{
-	    _customName = name;
-	}
-
-	public String getCustomName()
-	{
-	    return _customName;
-	}
-
-	private int _originalNpcId = 0;
-
-	public void setOriginalNpcId(int id)
-	{
-		_originalNpcId = id;
-	}
-
-	public int getOriginalNpcId()
-	{
-		return _originalNpcId > 0 ? _originalNpcId : getNpcId();
-	}
-
-
-
+	
 }
