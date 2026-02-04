@@ -1,3 +1,5 @@
+https://www.l2jbrasil.com/topic/150075-l2-%E2%80%93-jdev-open-source-interlude/
+
 # 📦 DEV Project - Instalação e Execução
 
 Se você baixou o pacote do servidor e está com dúvidas de como executar, siga este passo a passo simples:
